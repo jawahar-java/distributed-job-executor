@@ -1,5 +1,6 @@
 package com.jawahar.workerservice.service;
 
+import com.jawahar.workerservice.config.WorkerContext;
 import com.jawahar.workerservice.dto.RegisterWorkerRequest;
 import com.jawahar.workerservice.dto.RegisterWorkerResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,19 +13,29 @@ public class RegistrationService {
     @Autowired
     private RestClient restClient;
 
-    public RegisterWorkerResponse registerWorker(){
+    @Autowired
+    private WorkerContext workerContext;
 
-        RegisterWorkerRequest request= RegisterWorkerRequest.builder()
+    public RegisterWorkerResponse registerWorker() {
+
+        RegisterWorkerRequest request = RegisterWorkerRequest.builder()
                 .workerName("worker-1")
                 .host("localhost")
                 .port(8081)
                 .maxCapacity(5)
                 .build();
 
-        return restClient.post()
+        RegisterWorkerResponse response = restClient.post()
                 .uri("http://localhost:8080/workers/register")
                 .body(request)
                 .retrieve()
                 .body(RegisterWorkerResponse.class);
+
+        // Store the worker information for future heartbeats
+        workerContext.setWorkerId(response.getWorkerId());
+        workerContext.setWorkerName(request.getWorkerName());
+        System.out.println("Stored WorkerContext ID = " + workerContext.getWorkerId());
+
+        return response;
     }
 }
