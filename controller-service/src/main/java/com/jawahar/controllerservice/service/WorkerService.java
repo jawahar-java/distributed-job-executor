@@ -1,9 +1,12 @@
 package com.jawahar.controllerservice.service;
 
+import com.jawahar.controllerservice.dto.HeartbeatRequest;
+import com.jawahar.controllerservice.dto.HeartbeatResponse;
 import com.jawahar.controllerservice.dto.RegisterWorkerRequest;
 import com.jawahar.controllerservice.dto.RegisterWorkerResponse;
 import com.jawahar.controllerservice.entity.Worker;
 import com.jawahar.controllerservice.enums.WorkerStatus;
+import com.jawahar.controllerservice.exception.WorkerNotFoundException;
 import com.jawahar.controllerservice.repository.WorkerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -69,5 +72,28 @@ public class WorkerService {
                 .status(worker.getStatus().name())
                 .message(message)
                 .build();
+    }
+
+    public HeartbeatResponse heartbeat(HeartbeatRequest request){
+
+        Worker worker = workerRepository.findById(request.getWorkerId())
+                .orElseThrow(() ->
+                        new WorkerNotFoundException(request.getWorkerId()));
+
+        Instant now = Instant.now();
+
+        worker.setLastHeartbeat(now);
+        worker.setUpdatedAt(now);
+        worker.setStatus(WorkerStatus.IDLE);
+
+        workerRepository.save(worker);
+
+        return HeartbeatResponse.builder()
+                .workerId(worker.getId())
+                .status(worker.getStatus().name())
+                .message("Heartbeat received successfully.")
+                .lastHeartbeat(worker.getLastHeartbeat())
+                .build();
+
     }
 }
