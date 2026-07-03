@@ -22,4 +22,17 @@ public class GlobalExceptionHandler {
                 .build();
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
     }
+
+    @ExceptionHandler(WorkerNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleWorkerNotFoundException(WorkerNotFoundException workerNotFoundException, HttpServletRequest httpServletRequest) {
+        ErrorResponse error = ErrorResponse.builder()
+                .timestamp(Instant.now())
+                .status(HttpStatus.NOT_FOUND.value())
+                .error(HttpStatus.NOT_FOUND.getReasonPhrase())
+                .message(workerNotFoundException.getMessage())
+                .path(httpServletRequest.getRequestURI())
+                .build();
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+    }
 }

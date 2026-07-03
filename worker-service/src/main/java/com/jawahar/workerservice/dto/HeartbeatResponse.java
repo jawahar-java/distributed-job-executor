@@ -1,0 +1,24 @@
+package com.jawahar.workerservice.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.time.Instant;
+import java.util.UUID;
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class HeartbeatResponse {
+
+    private UUID workerId;
+
+    private String status;
+
+    private String message;
+
+    private Instant lastHeartbeat;
+}
