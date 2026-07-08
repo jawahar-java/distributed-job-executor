@@ -50,4 +50,7 @@ public class Worker {
 
     @Column(nullable = false)
     private Instant updatedAt;
+
+    @Column(nullable = false)
+    private Integer totalJobsExecuted;
 }
