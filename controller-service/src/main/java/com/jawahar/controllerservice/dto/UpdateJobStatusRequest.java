@@ -1,4 +1,4 @@
-package com.jawahar.controllerservice.dto.dto;
+package com.jawahar.controllerservice.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,11 +9,13 @@ import java.util.UUID;
 
 @Data
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
-public class RegisterWorkerResponse {
+@AllArgsConstructor
+public class UpdateJobStatusRequest {
+    private UUID jobId;
 
     private UUID workerId;
+
     private String status;
-    private String message;
+
 }

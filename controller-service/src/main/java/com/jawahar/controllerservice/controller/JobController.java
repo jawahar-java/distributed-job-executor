@@ -1,8 +1,6 @@
 package com.jawahar.controllerservice.controller;
 
-import com.jawahar.controllerservice.dto.CreateJobRequest;
-import com.jawahar.controllerservice.dto.CreateJobResponse;
-import com.jawahar.controllerservice.dto.GetJobResponse;
+import com.jawahar.controllerservice.dto.*;
 import com.jawahar.controllerservice.service.JobService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,5 +27,39 @@ public class JobController {
     public ResponseEntity<GetJobResponse> getJobById(@PathVariable UUID jobId){
 
         return ResponseEntity.ok(jobService.getJobDetailsById(jobId));
+    }
+
+    @GetMapping("/worker/{workerId}/next")
+    public ResponseEntity<NextJobResponse> getNextJob(
+            @PathVariable UUID workerId){
+
+        NextJobResponse response =
+                jobService.getNextJob(workerId);
+
+        if(response==null){
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/complete")
+    public ResponseEntity<Void> completeJob(
+            @RequestBody CompleteJobRequest request){
+
+        jobService.completeJob(request);
+
+        return ResponseEntity.ok().build();
+
+    }
+
+    @PostMapping("/status")
+    public ResponseEntity<Void> updateStatus(
+            @RequestBody UpdateJobStatusRequest request){
+
+        jobService.updateStatus(request);
+
+        return ResponseEntity.ok().build();
+
     }
 }
