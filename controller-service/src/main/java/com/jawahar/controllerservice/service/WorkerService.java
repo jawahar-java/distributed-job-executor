@@ -39,6 +39,7 @@ public class WorkerService {
             worker.setStatus(WorkerStatus.REGISTERED);
             worker.setLastHeartbeat(Instant.now());
             worker.setUpdatedAt(Instant.now());
+            worker.setTotalJobsExecuted(0);
 
             workerRepository.save(worker);
 
