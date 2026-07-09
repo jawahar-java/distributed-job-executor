@@ -22,11 +22,16 @@ public class HeartbeatScheduler {
 
     @Scheduled(initialDelay = 30000,fixedRate = 30000)
     public void heartbeat() {
-        System.out.println("Sending heartbeat...");
+        System.out.println();
+        System.out.println("--------------- HEARTBEAT ----------------");
 
         HeartbeatResponse response = heartbeatService.sendHeartbeat();
 
-        System.out.println("Heartbeat sent.");
-        System.out.println(response);
+        System.out.println("Worker ID      : " + response.getWorkerId());
+        System.out.println("Worker Status  : " + response.getStatus());
+        System.out.println("Last Heartbeat : " + response.getLastHeartbeat());
+
+        System.out.println("------------------------------------------");
+        System.out.println();
     }
 }

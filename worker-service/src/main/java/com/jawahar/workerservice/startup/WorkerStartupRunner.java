@@ -26,10 +26,16 @@ public class WorkerStartupRunner implements CommandLineRunner {
 
         RegisterWorkerResponse registerWorkerResponse = registrationService.registerWorker();
 
-        System.out.println("--------------------------------------");
-        System.out.println("Worker Registered Successfully");
-        System.out.println("Worker ID : " + registerWorkerResponse.getWorkerId());
-        System.out.println("Status    : " + registerWorkerResponse.getStatus());
-        System.out.println("--------------------------------------");
+        System.out.println();
+        System.out.println("======================================================");
+        System.out.println("          WORKER REGISTRATION SUCCESSFUL");
+        System.out.println("======================================================");
+        System.out.println("Worker Name : worker-1");
+        System.out.println("Worker ID   : " + registerWorkerResponse.getWorkerId());
+        System.out.println("Status      : " + registerWorkerResponse.getStatus());
+        System.out.println("Host        : localhost");
+        System.out.println("Port        : 8081");
+        System.out.println("======================================================");
+        System.out.println();
     }
 }

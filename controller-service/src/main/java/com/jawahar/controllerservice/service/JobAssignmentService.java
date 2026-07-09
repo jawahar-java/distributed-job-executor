@@ -37,6 +37,13 @@ public class JobAssignmentService {
 
             Worker worker = loadBalancerService.nextWorker();
 
+            if (worker == null) {
+                System.out.println("No available workers. Job assignment skipped.");
+                return;
+            }
+
+            job.setWorkerId(worker.getId());
+
             job.setWorkerId(worker.getId());
             job.setAssignedAt(Instant.now());
             job.setStatus(JobStatus.ASSIGNED);
@@ -47,10 +54,16 @@ public class JobAssignmentService {
             jobRepository.save(job);
             workerRepository.save(worker);
 
-            System.out.println(
-                    "Assigned Job " + job.getId()
-                            + " to Worker "
-                            + worker.getWorkerName());
+            System.out.println();
+            System.out.println("======================================================");
+            System.out.println("                JOB ASSIGNED");
+            System.out.println("======================================================");
+            System.out.println("Job ID        : " + job.getId());
+            System.out.println("Worker        : " + worker.getWorkerName());
+            System.out.println("Worker Status : " + worker.getStatus());
+            System.out.println("Assigned Time : " + job.getAssignedAt());
+            System.out.println("======================================================");
+            System.out.println();
 
         }
     }

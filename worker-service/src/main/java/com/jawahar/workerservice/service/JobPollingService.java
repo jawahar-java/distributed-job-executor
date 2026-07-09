@@ -36,13 +36,19 @@ public class JobPollingService {
 
             NextJobResponse job = response.getBody();
 
-            System.out.println("--------------------------------");
-            System.out.println("Job Received");
-            System.out.println("Job ID   : " + job.getJobId());
-            System.out.println("Job Type : " + job.getJobType());
-            System.out.println("Payload  : " + job.getPayload());
-            System.out.println("--------------------------------");
+
             jobExecutionService.executeJob(job);
+            System.out.println();
+            System.out.println("======================================================");
+            System.out.println("                JOB RECEIVED");
+            System.out.println("======================================================");
+            System.out.println("Job ID      : " + job.getJobId());
+            System.out.println("Job Type    : " + job.getJobType());
+            System.out.println("Status      : " + job.getStatus());
+            System.out.println("Payload     :");
+            System.out.println(job.getPayload());
+            System.out.println("======================================================");
+            System.out.println();
         }
     }
 }

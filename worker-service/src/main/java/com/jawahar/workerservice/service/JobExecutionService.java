@@ -1,8 +1,8 @@
 package com.jawahar.workerservice.service;
 
 import com.jawahar.workerservice.config.WorkerContext;
-import com.jawahar.workerservice.dto.CompleteJobRequest;
 import com.jawahar.workerservice.dto.NextJobResponse;
+import com.jawahar.workerservice.dto.UpdateJobStatusRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
@@ -18,40 +18,46 @@ public class JobExecutionService {
 
     public void executeJob(NextJobResponse job){
 
-        try{
+        try {
 
-            System.out.println("--------------------------------");
-            System.out.println("Executing Job...");
-            System.out.println(job.getJobId());
+            System.out.println();
+            System.out.println("======================================================");
+            System.out.println("                 JOB EXECUTION");
+            System.out.println("======================================================");
+            System.out.println("Job ID        : " + job.getJobId());
+            System.out.println("Worker        : " + workerContext.getWorkerName());
+            System.out.println("Execution     : STARTED");
+            System.out.println("======================================================");
 
+            // Simulate execution
             Thread.sleep(3000);
 
-            // Simulate failure randomly
+            // Simulate random success/failure
             boolean success = Math.random() > 0.3;
 
-            System.out.println("Execution Completed");
+            System.out.println("Execution     : COMPLETED");
+            System.out.println("Final Status  : " + (success ? "SUCCESS" : "FAILED"));
+            System.out.println("======================================================");
+            System.out.println();
 
-            CompleteJobRequest request =
-                    CompleteJobRequest.builder()
+            UpdateJobStatusRequest request =
+                    UpdateJobStatusRequest.builder()
                             .jobId(job.getJobId())
                             .workerId(workerContext.getWorkerId())
                             .status(success ? "SUCCESS" : "FAILED")
                             .build();
-            System.out.println(
-                    success
-                            ? "Job Executed Successfully"
-                            : "Job Execution Failed");
 
             restClient.post()
-                    .uri("http://localhost:8080/jobs/complete")
+                    .uri("http://localhost:8080/jobs/status")
                     .body(request)
                     .retrieve()
                     .toBodilessEntity();
 
-        }
-        catch(Exception e){
-            e.printStackTrace();
-        }
+        } catch (Exception e) {
 
+            System.err.println("Job Execution Error");
+
+
+        }
     }
 }
